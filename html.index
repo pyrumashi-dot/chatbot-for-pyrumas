@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>n8n Chatbot Integration</title>
+    <!-- 1. Load the n8n Chat Widget styles -->
+    <link href="https://cdn.jsdelivr.net/npm/@n8n/chat/dist/style.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .info-card {
+            background-color: #e6f7ff;
+            border-left: 5px solid #1890ff;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Welcome to Our Website!</h1>
+    <div class="info-card">
+        <p>This page demonstrates the integration of your n8n AI Agent Chatbot via the official n8n Chat Widget.</p>
+        <p><strong>To test:</strong> Keep your n8n and ngrok terminals running while viewing this page.</p>
+    </div>
+
+    <!-- 2. The Chat Widget will be created here -->
+    <div id="n8n-chat-container"></div>
+
+    <!-- 3. Load the n8n Chat Widget script and initialize it -->
+    <script type="module">
+        import { createChat } from 'https://cdn.jsdelivr.net/npm/@n8n/chat/dist/chat.bundle.es.js';
+
+        // 🚨 IMPORTANT: Replace the localhost URL with the live ngrok public URL.
+        const LIVE_WEBHOOK_URL = 'https://libbie-semidramatic-cesar.ngrok-free.dev/webhook/970120ca-bb27-4bcd-805f-87f4a331b2a1/chat';
+
+        createChat({
+            webhookUrl: LIVE_WEBHOOK_URL,
+            // The container ID where the chat interface should be rendered
+            containerId: 'n8n-chat-container', 
+            // Optional: Customize initial appearance
+            title: "Concierge Bot (Live)",
+            subtitle: "Ask me anything about our products.",
+            placeholderText: "Type your name or question..."
+        });
+    </script>
+
+</body>
+</html>
