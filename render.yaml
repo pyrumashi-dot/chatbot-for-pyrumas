@@ -1,0 +1,47 @@
+services:
+  - type: web
+    name: n8n-backend
+    env: docker
+    docker:
+      image: "n8nio/n8n:latest"
+    envVars:
+      - key: N8N_PORT
+        value: "${PORT}"
+      - key: N8N_HOST
+        value: "0.0.0.0"
+      - key: N8N_PUBLIC_URL
+        value: "https://n8n-backend.onrender.com/"
+      - key: WEBHOOK_URL
+        value: "https://n8n-backend.onrender.com/"
+      - key: N8N_EDITOR_BASE_URL
+        value: "https://n8n-backend.onrender.com/"
+      - key: GENERIC_TIMEZONE
+        value: "Asia/Kolkata"
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+      # Postgres (recommended)
+      - key: DB_TYPE
+        value: "postgresdb"
+      - key: DB_POSTGRESDB_HOST
+        fromDatabase: { name: n8n-db, property: host }
+      - key: DB_POSTGRESDB_PORT
+        fromDatabase: { name: n8n-db, property: port }
+      - key: DB_POSTGRESDB_DATABASE
+        fromDatabase: { name: n8n-db, property: database }
+      - key: DB_POSTGRESDB_USER
+        fromDatabase: { name: n8n-db, property: user }
+      - key: DB_POSTGRESDB_PASSWORD
+        fromDatabase: { name: n8n-db, property: password }
+    healthCheckPath: /healthz
+
+  - type: web
+    name: streamlit-chat
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "streamlit run app.py --server.port $PORT --server.address 0.0.0.0"
+    envVars:
+      - key: N8N_CHAT_URL
+        value: "https://n8n-backend.onrender.com/webhook/<webhookId>/chat"
+
+databases:
+  - name: n8n-db
